@@ -17,11 +17,11 @@ import org.apache.spark.sql.functions._
 object RunRecommender {
 
   def main(args: Array[String]): Unit = {
-    val spark = SparkSession.builder().getOrCreate()
+    val spark = SparkSession.builder().master("local[*]").getOrCreate()
     // Optional, but may help avoid errors due to long lineage
-    spark.sparkContext.setCheckpointDir("hdfs:///tmp/")
+    spark.sparkContext.setCheckpointDir("hdfs://localhost:8020/tmp/")
 
-    val base = "hdfs:///user/ds/"
+    val base = "hdfs://localhost:8020/user/ds/"
     val rawUserArtistData = spark.read.textFile(base + "user_artist_data.txt")
     val rawArtistData = spark.read.textFile(base + "artist_data.txt")
     val rawArtistAlias = spark.read.textFile(base + "artist_alias.txt")
